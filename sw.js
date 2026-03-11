@@ -1,4 +1,4 @@
-const CACHE_NAME = 'site-assistant-v2';
+const CACHE_NAME = 'site-Companion-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',        // your main HTML file (rename if needed)

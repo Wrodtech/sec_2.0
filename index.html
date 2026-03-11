@@ -6,14 +6,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#2563eb">
-    <meta name="description" content="World‑class site engineering assistant – tunnels, highways, RC frames, railways & more">
+    <meta name="description" content="World‑class site engineering Companion – tunnels, highways, RC frames, railways & more">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
     <meta name="apple-mobile-web-app-title" content="Site Assist">
-    <title>Site Engineering Assistant (WTech)</title>
+    <title>Site Engineering Companion (WrodTech)</title>
     <style>
         /* ==============================================
            CSS (full original + enhancements)
@@ -1072,8 +1072,8 @@
             margin-bottom: 12px;
             line-height: 1.4;
         }
-        /* WTech footer */
-        .wtech-footer {
+        /* WrodTech footer */
+        .WrodTech-footer {
             text-align: center;
             font-size: 12px;
             color: var(--text-tertiary);
@@ -1115,7 +1115,7 @@
         <header class="app-header">
             <div class="header-title">
                 <span class="header-icon">📐</span>
-                <span>Site Engineering Assistant</span>
+                <span>Site Engineering Companion</span>
             </div>
             <div class="header-actions">
                 <button class="icon-button" id="calculator-toggle" aria-label="Calculators">🧮</button>
@@ -1137,7 +1137,7 @@
             <div id="module-content" class="module-content">
                 <div class="empty-state">
                     <div class="empty-state-icon">📱</div>
-                    <h3>Site Engineering Assistant</h3>
+                    <h3>Site Engineering Companion</h3>
                     <p>Select a module below or tap 🧮 for calculators</p>
                 </div>
             </div>
@@ -1179,7 +1179,7 @@
         </div>
     </div>
 
-    <!-- About Modal (WTech) -->
+    <!-- About Modal (WrodTech) -->
     <div id="about-modal" class="modal-overlay" style="display: none;">
         <div class="modal-container">
             <div class="modal-header">
@@ -1190,7 +1190,7 @@
                 <div style="text-align: center; margin-bottom: 20px;">
                     <span style="font-size: 48px;">📐🛰️👷</span>
                 </div>
-                <h3 style="color: var(--primary-color); margin-bottom: 10px;">Site Engineering Assistant</h3>
+                <h3 style="color: var(--primary-color); margin-bottom: 10px;">Site Engineering Companion</h3>
                 <p style="line-height: 1.6; margin-bottom: 16px;">
                     A comprehensive field reference for civil engineers and surveyors. Designed for fast, offline access to:
                 </p>
@@ -1212,7 +1212,7 @@
                     • The ↑ button appears when you scroll – tap to return to top.
                 </p>
                 <div style="background: var(--surface); border-radius: var(--radius); padding: 16px; text-align: center; border: 1px solid var(--border);">
-                    <p style="font-weight: 600;">Developed by <span style="color: var(--primary-color);">WTech</span> © 2025</p>
+                    <p style="font-weight: 600;">Developed by <span style="color: var(--primary-color);">WrodTech</span> © 2025</p>
                     <p style="font-size: 12px; color: var(--text-tertiary);">version 2.0 – world‑class field companion</p>
                 </div>
             </div>
@@ -1226,7 +1226,7 @@
 
     <script>
         // ==============================================
-        // SITE ENGINEERING ASSISTANT – v2.0 (WTech)
+        // SITE ENGINEERING Companion – v2.0 (WrodTech)
         // Full integration with new terminology & features
         // ==============================================
 
@@ -3089,13 +3089,13 @@
                     dxfFilter: AppState.dxfFilter,
                     engineerFilter: AppState.engineerFilter
                 };
-                localStorage.setItem('fieldAssistantState', JSON.stringify(state));
+                localStorage.setItem('fieldCompanionState', JSON.stringify(state));
             } catch (e) { console.warn('Could not save state to localStorage:', e); }
         }
 
         function loadAppState() {
             try {
-                const saved = localStorage.getItem('fieldAssistantState');
+                const saved = localStorage.getItem('fieldCompanionState');
                 if (saved) {
                     const state = JSON.parse(saved);
                     AppState.theme = state.theme || 'light';
@@ -3192,7 +3192,7 @@
                 if (content) DOM.moduleContent.appendChild(content);
                 DOM.moduleContent.classList.remove('loading');
                 setTimeout(() => { DOM.contentContainer.scrollTop = 0; AppState.activeTab = moduleId; }, 10);
-                document.title = `${ModuleData[moduleId].title} - Site Engineering Assistant`;
+                document.title = `${ModuleData[moduleId].title} - Site Engineering Companion`;
             });
             saveAppState();
         }
@@ -3238,7 +3238,7 @@
             registerServiceWorker();
             loadModule(AppState.currentModule);
 
-            console.log('Site Engineering Assistant v2.0 (WTech) fully loaded – new terminology & features active');
+            console.log('Site Engineering Companion v2.0 (WrodTech) fully loaded – new terminology & features active');
         }
 
         if (document.readyState === 'loading') {

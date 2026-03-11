@@ -6,14 +6,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#2563eb">
-    <meta name="description" content="World‑class site engineering Companion – tunnels, highways, RC frames, railways & more">
+    <meta name="description" content="World‑class site engineering assistant – tunnels, highways, RC frames, railways & more">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
     <meta name="apple-mobile-web-app-title" content="Site Assist">
-    <title>Site Engineering Companion (WrodTech)</title>
+    <title>Site Engineering Assistant (WTech)</title>
     <style>
         /* ==============================================
            CSS (full original + enhancements)
@@ -965,7 +965,8 @@
             color: var(--text-secondary);
             margin-bottom: 4px;
         }
-        .calculator-input-group input {
+        .calculator-input-group input,
+        .calculator-input-group textarea {
             width: 100%;
             padding: 8px 12px;
             border: 1px solid var(--border);
@@ -973,6 +974,8 @@
             background-color: var(--background);
             color: var(--text-primary);
             font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
         }
         .calculator-result {
             background-color: var(--surface);
@@ -1072,8 +1075,8 @@
             margin-bottom: 12px;
             line-height: 1.4;
         }
-        /* WrodTech footer */
-        .WrodTech-footer {
+        /* WTech footer */
+        .wtech-footer {
             text-align: center;
             font-size: 12px;
             color: var(--text-tertiary);
@@ -1115,7 +1118,7 @@
         <header class="app-header">
             <div class="header-title">
                 <span class="header-icon">📐</span>
-                <span>Site Engineering Companion</span>
+                <span>Site Engineering Assistant</span>
             </div>
             <div class="header-actions">
                 <button class="icon-button" id="calculator-toggle" aria-label="Calculators">🧮</button>
@@ -1137,7 +1140,7 @@
             <div id="module-content" class="module-content">
                 <div class="empty-state">
                     <div class="empty-state-icon">📱</div>
-                    <h3>Site Engineering Companion</h3>
+                    <h3>Site Engineering Assistant</h3>
                     <p>Select a module below or tap 🧮 for calculators</p>
                 </div>
             </div>
@@ -1179,7 +1182,7 @@
         </div>
     </div>
 
-    <!-- About Modal (WrodTech) -->
+    <!-- About Modal (WTech) -->
     <div id="about-modal" class="modal-overlay" style="display: none;">
         <div class="modal-container">
             <div class="modal-header">
@@ -1190,7 +1193,7 @@
                 <div style="text-align: center; margin-bottom: 20px;">
                     <span style="font-size: 48px;">📐🛰️👷</span>
                 </div>
-                <h3 style="color: var(--primary-color); margin-bottom: 10px;">Site Engineering Companion</h3>
+                <h3 style="color: var(--primary-color); margin-bottom: 10px;">Site Engineering Assistant</h3>
                 <p style="line-height: 1.6; margin-bottom: 16px;">
                     A comprehensive field reference for civil engineers and surveyors. Designed for fast, offline access to:
                 </p>
@@ -1200,7 +1203,7 @@
                     <li>DWG → DXF preparation checklists</li>
                     <li>Expanded terminology: <strong>tunnels, highways, RC frames, railways</strong></li>
                     <li>Problem‑solving scenarios & QA checklists</li>
-                    <li>Interactive calculators (slope, volume, manhole rings...)</li>
+                    <li>Interactive calculators (slope, volume, manhole rings, concrete with intrusions, earthworks cut/fill)</li>
                 </ul>
                 <p style="line-height: 1.6; margin-bottom: 20px;">
                     <strong>How to use:</strong><br>
@@ -1212,8 +1215,8 @@
                     • The ↑ button appears when you scroll – tap to return to top.
                 </p>
                 <div style="background: var(--surface); border-radius: var(--radius); padding: 16px; text-align: center; border: 1px solid var(--border);">
-                    <p style="font-weight: 600;">Developed by <span style="color: var(--primary-color);">WrodTech</span> © 2025</p>
-                    <p style="font-size: 12px; color: var(--text-tertiary);">version 2.0 – world‑class field companion</p>
+                    <p style="font-weight: 600;">Developed by <span style="color: var(--primary-color);">WTech</span> © 2025</p>
+                    <p style="font-size: 12px; color: var(--text-tertiary);">version 2.1 – with advanced earthworks & concrete calculators</p>
                 </div>
             </div>
         </div>
@@ -1226,8 +1229,8 @@
 
     <script>
         // ==============================================
-        // SITE ENGINEERING Companion – v2.0 (WrodTech)
-        // Full integration with new terminology & features
+        // SITE ENGINEERING ASSISTANT – v2.1 (WTech)
+        // Added: concrete with intrusions, earthworks cut/fill using polygon coordinates
         // ==============================================
 
         // ---------- Global State ----------
@@ -1240,7 +1243,7 @@
             searchQuery: '',
             lastScrollPosition: 0,
             dxfFilter: 'all',
-            engineerFilter: 'all',   // for glossary category filter
+            engineerFilter: 'all',
             expandedScenarios: new Set()
         };
 
@@ -1324,9 +1327,9 @@
             return element;
         };
 
-        // ---------- Module Data (FULL with new categories) ----------
-        // For brevity, we preserve ALL original data and add new categories.
-        // The complete ModuleData object is massive but included.
+        // ---------- Module Data (FULL with new calculators) ----------
+        // For brevity, we keep all original data and only modify the interactive section.
+        // The full ModuleData object is massive but included.
         // We'll define it step by step, but in the final answer it's all here.
 
         const ModuleData = {
@@ -1638,7 +1641,7 @@
 
             engineer: {
                 title: "Site Engineer Support",
-                subtitle: "Comprehensive field reference for civil engineering operations – now with tunnels, highways, RC frames & railway terms",
+                subtitle: "Comprehensive field reference – now with advanced concrete & earthworks calculators",
                 sections: [
                     {
                         type: "glossary",
@@ -2214,6 +2217,97 @@
                                         totalVolume: `${total.toFixed(2)} m³`
                                     };
                                 }
+                            },
+                            // NEW: Concrete with Intrusions
+                            {
+                                id: "concrete-advanced",
+                                name: "Concrete Volume with Intrusions",
+                                description: "Calculate net concrete volume after subtracting voids (e.g., openings, ducts). Enter total volume to subtract.",
+                                inputs: [
+                                    { name: "length", label: "Length", unit: "m", default: 10.0, step: 0.1, min: 0 },
+                                    { name: "width", label: "Width", unit: "m", default: 5.0, step: 0.1, min: 0 },
+                                    { name: "depth", label: "Depth / Thickness", unit: "m", default: 0.2, step: 0.01, min: 0 },
+                                    { name: "subtract", label: "Total subtract volume", unit: "m³", default: 0.5, step: 0.01, min: 0 },
+                                    { name: "waste", label: "Waste Factor", unit: "%", default: 5, step: 1, min: 0, max: 20 }
+                                ],
+                                calculate: (length, width, depth, subtract, waste) => {
+                                    const gross = length * width * depth;
+                                    const net = gross - subtract;
+                                    if (net < 0) return { error: "Subtract volume exceeds gross volume" };
+                                    const wasteAmount = net * (waste / 100);
+                                    const total = net + wasteAmount;
+                                    return {
+                                        grossVolume: `${gross.toFixed(3)} m³`,
+                                        subtractVolume: `${subtract.toFixed(3)} m³`,
+                                        netVolume: `${net.toFixed(3)} m³`,
+                                        wasteAmount: `${wasteAmount.toFixed(3)} m³`,
+                                        totalVolume: `${total.toFixed(3)} m³`
+                                    };
+                                }
+                            },
+                            // NEW: Earthworks Cut/Fill using Polygon Coordinates
+                            {
+                                id: "earthworks-polygon",
+                                name: "Earthworks Cut/Fill (Polygon)",
+                                description: "Enter coordinates (x,y,z) of points in order around the area. Use semicolons between points, commas between x,y,z. Example: 0,0,102.5; 10,0,103.2; 10,10,101.8; 0,10,102.1",
+                                inputs: [
+                                    { type: "textarea", name: "coords", label: "Coordinates (x,y,z)", default: "0,0,102.5; 10,0,103.2; 10,10,101.8; 0,10,102.1", rows: 3 },
+                                    { name: "designLevel", label: "Design Level", unit: "m", default: 102.0, step: 0.1 },
+                                    { name: "swell", label: "Swell Factor (cut) / Shrinkage (fill)", unit: "%", default: 10, step: 1, min: 0, max: 30 }
+                                ],
+                                calculate: (coordsText, designLevel, swell) => {
+                                    // Parse coordinates
+                                    const points = [];
+                                    const lines = coordsText.split(';');
+                                    for (let line of lines) {
+                                        line = line.trim();
+                                        if (!line) continue;
+                                        const parts = line.split(',').map(s => parseFloat(s.trim()));
+                                        if (parts.length < 3 || isNaN(parts[0]) || isNaN(parts[1]) || isNaN(parts[2])) {
+                                            return { error: "Invalid coordinate format. Use x,y,z separated by commas, points separated by semicolons." };
+                                        }
+                                        points.push({ x: parts[0], y: parts[1], z: parts[2] });
+                                    }
+                                    if (points.length < 3) return { error: "At least 3 points are required." };
+                                    
+                                    // Shoelace area
+                                    let area = 0;
+                                    const n = points.length;
+                                    for (let i = 0; i < n; i++) {
+                                        const j = (i + 1) % n;
+                                        area += points[i].x * points[j].y;
+                                        area -= points[j].x * points[i].y;
+                                    }
+                                    area = Math.abs(area) / 2;
+                                    
+                                    // Average height
+                                    const avgZ = points.reduce((sum, p) => sum + p.z, 0) / n;
+                                    
+                                    // Cut/fill volume
+                                    const diff = avgZ - designLevel; // positive = cut, negative = fill
+                                    const rawVolume = area * diff;
+                                    const swellFactor = swell / 100;
+                                    let adjustedVolume;
+                                    let type;
+                                    if (diff > 0) {
+                                        // cut – material expands
+                                        adjustedVolume = rawVolume * (1 + swellFactor);
+                                        type = "Cut (excavate)";
+                                    } else {
+                                        // fill – material compacts (shrinkage)
+                                        adjustedVolume = rawVolume * (1 - swellFactor); // simple shrinkage model
+                                        type = "Fill (import)";
+                                    }
+                                    
+                                    return {
+                                        area: `${area.toFixed(2)} m²`,
+                                        averageHeight: `${avgZ.toFixed(3)} m`,
+                                        designLevel: `${designLevel.toFixed(3)} m`,
+                                        difference: `${diff.toFixed(3)} m (${diff > 0 ? 'cut' : 'fill'})`,
+                                        rawVolume: `${Math.abs(rawVolume).toFixed(2)} m³ (${type})`,
+                                        adjustedVolume: `${Math.abs(adjustedVolume).toFixed(2)} m³ (with swell/shrinkage)`
+                                    };
+                                }
                             }
                         ]
                     }
@@ -2294,6 +2388,367 @@
                 ]
             }
         };
+
+        // ---------- Helper Functions (scenario, calculator, toggle) ----------
+        const renderScenarioTemplate = (scenario, index) => {
+            const scenarioId = `scenario-${index}`;
+            const isExpanded = AppState.expandedScenarios.has(scenarioId);
+            return `
+                <div class="scenario-card" data-scenario-id="${scenarioId}">
+                    <div class="scenario-title">
+                        <span class="scenario-icon">${scenario.icon}</span>
+                        ${scenario.scenario}
+                    </div>
+                    <div class="priority-badge priority-${scenario.priority}">
+                        Priority: ${scenario.priority.toUpperCase()}
+                    </div>
+                    <div class="solution-list" style="display: ${isExpanded ? 'block' : 'none'}">
+                        ${scenario.steps.map((step, i) => `<div class="solution-step">${step}</div>`).join('')}
+                    </div>
+                    ${scenario.educational ? `
+                        <div class="educational-tip" style="display: ${isExpanded ? 'block' : 'none'}">
+                            <div class="tip-title">📚 ${scenario.educational.title}</div>
+                            <div class="tip-content">${scenario.educational.content}</div>
+                        </div>
+                    ` : ''}
+                    ${scenario.reference ? `
+                        <div class="reference-card" style="display: ${isExpanded ? 'block' : 'none'}">
+                            <div class="reference-title">Reference Standard</div>
+                            <div class="reference-value">${scenario.reference}</div>
+                        </div>
+                    ` : ''}
+                    <button class="scenario-toggle" data-scenario-id="${scenarioId}" 
+                            style="margin-top: 12px; padding: 8px 16px; background: var(--primary-color); 
+                                   color: white; border: none; border-radius: var(--radius-sm); 
+                                   cursor: pointer; width: 100%;">
+                        ${isExpanded ? 'Show Less ▲' : 'Show Solution ▼'}
+                    </button>
+                </div>
+            `;
+        };
+
+        const toggleScenario = (scenarioId) => {
+            const scenarioElement = DOM.moduleContent.querySelector(`[data-scenario-id="${scenarioId}"]`);
+            if (!scenarioElement) return;
+            const solutionList = scenarioElement.querySelector('.solution-list');
+            const educationalTip = scenarioElement.querySelector('.educational-tip');
+            const referenceCard = scenarioElement.querySelector('.reference-card');
+            const toggleButton = scenarioElement.querySelector('.scenario-toggle');
+            if (AppState.expandedScenarios.has(scenarioId)) {
+                AppState.expandedScenarios.delete(scenarioId);
+                solutionList.style.display = 'none';
+                if (educationalTip) educationalTip.style.display = 'none';
+                if (referenceCard) referenceCard.style.display = 'none';
+                toggleButton.textContent = 'Show Solution ▼';
+            } else {
+                AppState.expandedScenarios.add(scenarioId);
+                solutionList.style.display = 'block';
+                if (educationalTip) educationalTip.style.display = 'block';
+                if (referenceCard) referenceCard.style.display = 'block';
+                toggleButton.textContent = 'Show Less ▲';
+            }
+            saveAppState();
+        };
+
+        function createCalculatorCard(calc) {
+            const card = createElement('div', { className: 'calculator-card' });
+            card.appendChild(createElement('h3', {}, [calc.name]));
+            if (calc.description) {
+                card.appendChild(createElement('p', {}, [calc.description]));
+            }
+
+            const inputsDiv = createElement('div', { className: 'calculator-inputs' });
+            const values = {};
+
+            calc.inputs.forEach(input => {
+                const id = `calc-${calc.id}-${input.name}-${Math.random().toString(36).substr(2, 5)}`;
+                const group = createElement('div', { className: 'calculator-input-group' });
+                const label = createElement('label', { htmlFor: id }, [
+                    input.label, input.unit ? ` (${input.unit})` : ''
+                ]);
+                
+                let inputEl;
+                if (input.type === 'textarea') {
+                    inputEl = createElement('textarea', {
+                        id: id,
+                        rows: input.rows || 3,
+                        style: { width: '100%', padding: '8px', fontFamily: 'monospace' },
+                        onInput: () => updateResult()
+                    }, [input.default || '']);
+                } else {
+                    inputEl = createElement('input', {
+                        id: id,
+                        type: 'number',
+                        value: input.default,
+                        step: input.step || 'any',
+                        min: input.min !== undefined ? input.min : 0,
+                        style: { width: '100%', padding: '8px' },
+                        onInput: () => updateResult()
+                    });
+                }
+                
+                group.appendChild(label);
+                group.appendChild(inputEl);
+                inputsDiv.appendChild(group);
+                values[input.name] = inputEl;
+            });
+
+            card.appendChild(inputsDiv);
+
+            const resultDiv = createElement('div', { className: 'calculator-result' });
+
+            const updateResult = () => {
+                const params = {};
+                let allValid = true;
+                for (const [key, el] of Object.entries(values)) {
+                    if (el.tagName === 'TEXTAREA') {
+                        params[key] = el.value;
+                    } else {
+                        const val = parseFloat(el.value);
+                        if (isNaN(val)) { allValid = false; break; }
+                        params[key] = val;
+                    }
+                }
+
+                if (!allValid) {
+                    resultDiv.innerHTML = '<div class="calculator-error">Please enter valid numbers</div>';
+                    return;
+                }
+
+                const result = calc.calculate(
+                    params[calc.inputs[0].name],
+                    params[calc.inputs[1]?.name],
+                    params[calc.inputs[2]?.name],
+                    params[calc.inputs[3]?.name],
+                    params[calc.inputs[4]?.name],
+                    params[calc.inputs[5]?.name]
+                );
+
+                if (result.error) {
+                    resultDiv.innerHTML = `<div class="calculator-error">${result.error}</div>`;
+                } else {
+                    let html = '';
+                    for (const [key, value] of Object.entries(result)) {
+                        if (key !== 'error') {
+                            const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                            html += `<div class="calculator-result-line"><strong>${label}:</strong> ${value}</div>`;
+                        }
+                    }
+                    resultDiv.innerHTML = html;
+                }
+            };
+
+            card.appendChild(resultDiv);
+            setTimeout(updateResult, 0);
+            return card;
+        }
+
+        function toggleChecklistItem(itemId) {
+            if (AppState.checkedItems.has(itemId)) AppState.checkedItems.delete(itemId);
+            else AppState.checkedItems.add(itemId);
+            if (AppState.currentModule === 'dxf') {
+                const itemElement = DOM.moduleContent.querySelector(`[onclick*="${itemId}"]`);
+                if (itemElement) {
+                    itemElement.classList.toggle('checked', AppState.checkedItems.has(itemId));
+                    updateProgressBar();
+                }
+            }
+            saveAppState();
+        }
+
+        function updateProgressBar() {
+            if (AppState.currentModule !== 'dxf') return;
+            const checkedCount = Array.from(AppState.checkedItems).filter(id => id.startsWith('dxf-')).length;
+            const totalItems = ModuleData.dxf.checklist.length;
+            const progressFill = DOM.moduleContent.querySelector('.progress-fill');
+            if (progressFill) progressFill.style.width = `${(checkedCount / totalItems) * 100}%`;
+            const progressText = DOM.moduleContent.querySelector('.progress-header span:last-child');
+            if (progressText) progressText.textContent = `${checkedCount}/${totalItems}`;
+            const progressStats = DOM.moduleContent.querySelector('.progress-stats span:last-child');
+            if (progressStats) {
+                progressStats.innerHTML = checkedCount === totalItems ? '✅ Ready for export' :
+                    checkedCount >= totalItems * 0.8 ? '🟡 Almost complete' : '🔴 Needs attention';
+            }
+        }
+
+        function toggleTheme() {
+            const newTheme = AppState.theme === 'light' ? 'dark' : 'light';
+            AppState.theme = newTheme;
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        function toggleSearch() {
+            const isVisible = DOM.searchOverlay.style.display !== 'none';
+            DOM.searchOverlay.style.display = isVisible ? 'none' : 'block';
+            if (!isVisible) {
+                setTimeout(() => { DOM.searchInput.focus(); DOM.searchInput.select(); }, 100);
+            } else {
+                DOM.searchInput.blur();
+            }
+        }
+
+        function performSearch(query) {
+            AppState.searchQuery = query.toLowerCase().trim();
+            if (!AppState.searchQuery) { loadModule(AppState.currentModule); return; }
+            const results = [];
+            const searchTerms = AppState.searchQuery.split(' ').filter(term => term.length > 2);
+            const containsAllTerms = (text) => searchTerms.every(term => text.toLowerCase().includes(term));
+
+            Object.entries(ModuleData).forEach(([moduleId, module]) => {
+                if (module.sections) {
+                    module.sections.forEach(section => {
+                        if (containsAllTerms(section.title) || (section.content && section.content.some(item => containsAllTerms(item)))) {
+                            results.push({
+                                module: moduleId,
+                                title: section.title,
+                                content: section.content ? section.content.find(item => containsAllTerms(item)) || section.content[0] : 'Section content',
+                                type: module.title
+                            });
+                        }
+                    });
+                }
+                if (module.checklist) {
+                    module.checklist.forEach(item => {
+                        if (containsAllTerms(item.title) || containsAllTerms(item.details)) {
+                            results.push({ module: moduleId, title: item.title, content: item.details, type: module.title });
+                        }
+                    });
+                }
+                if (moduleId === 'engineer' && module.sections) {
+                    module.sections.forEach(section => {
+                        if (section.type === 'glossary') {
+                            section.categories.forEach(category => {
+                                category.terms.forEach(term => {
+                                    if (containsAllTerms(term.term) || containsAllTerms(term.definition)) {
+                                        results.push({ module: moduleId, title: term.term, content: term.definition, type: module.title + ' - Glossary' });
+                                    }
+                                });
+                            });
+                        } else if (section.type === 'qa') {
+                            section.items.forEach(item => {
+                                if (containsAllTerms(item.title)) {
+                                    results.push({ module: moduleId, title: item.title, content: `Checklist for ${item.phase} phase`, type: module.title + ' - QA Checklists' });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+            displaySearchResults(results);
+        }
+
+        function displaySearchResults(results) {
+            DOM.moduleContent.innerHTML = '';
+            if (results.length === 0) {
+                DOM.moduleContent.appendChild(createElement('div', { className: 'empty-state' }, [
+                    createElement('div', { className: 'empty-state-icon' }, ['🔍']),
+                    createElement('h3', {}, ['No results found']),
+                    createElement('p', {}, ['No matches for "', createElement('strong', {}, [AppState.searchQuery]), '"']),
+                    createElement('p', { style: { marginTop: '16px', fontSize: '14px', lineHeight: '1.5' } }, ['Try different keywords or browse the modules directly.'])
+                ]));
+                return;
+            }
+            DOM.moduleContent.appendChild(createElement('h1', { className: 'module-title' }, [`Search Results (${results.length})`]));
+            DOM.moduleContent.appendChild(createElement('p', { className: 'module-subtitle' }, ['Found ', results.length, ' matches for "', createElement('strong', {}, [AppState.searchQuery]), '"']));
+            const groupedResults = {};
+            results.forEach(result => {
+                if (!groupedResults[result.module]) groupedResults[result.module] = [];
+                groupedResults[result.module].push(result);
+            });
+            Object.entries(groupedResults).forEach(([moduleId, moduleResults]) => {
+                const moduleName = moduleResults[0].type;
+                DOM.moduleContent.appendChild(createElement('h2', { className: 'section-header', style: { marginTop: '24px' } }, [moduleName]));
+                moduleResults.forEach(result => {
+                    const resultItem = createElement('div', { 
+                        className: 'accordion',
+                        onClick: () => { loadModule(result.module); DOM.searchInput.value = ''; toggleSearch(); }
+                    }, [
+                        createElement('div', { style: { padding: '16px', cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: '8px' } }, [
+                            createElement('div', { style: { fontWeight: '600', fontSize: '15px', color: 'var(--text-primary)', lineHeight: '1.3' } }, [result.title]),
+                            createElement('div', { style: { fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.4' } }, [result.content.substring(0, 120) + (result.content.length > 120 ? '...' : '')]),
+                            createElement('div', { style: { fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' } }, ['Tap to open in ', moduleName])
+                        ])
+                    ]);
+                    DOM.moduleContent.appendChild(resultItem);
+                });
+            });
+        }
+
+        function saveAppState() {
+            try {
+                const state = {
+                    theme: AppState.theme,
+                    currentModule: AppState.currentModule,
+                    checkedItems: Array.from(AppState.checkedItems),
+                    expandedItems: Array.from(AppState.expandedItems),
+                    expandedScenarios: Array.from(AppState.expandedScenarios),
+                    dxfFilter: AppState.dxfFilter,
+                    engineerFilter: AppState.engineerFilter
+                };
+                localStorage.setItem('fieldAssistantState', JSON.stringify(state));
+            } catch (e) { console.warn('Could not save state to localStorage:', e); }
+        }
+
+        function loadAppState() {
+            try {
+                const saved = localStorage.getItem('fieldAssistantState');
+                if (saved) {
+                    const state = JSON.parse(saved);
+                    AppState.theme = state.theme || 'light';
+                    AppState.currentModule = state.currentModule || 'ts16';
+                    AppState.checkedItems = new Set(state.checkedItems || []);
+                    AppState.expandedItems = new Set(state.expandedItems || []);
+                    AppState.expandedScenarios = new Set(state.expandedScenarios || []);
+                    AppState.dxfFilter = state.dxfFilter || 'all';
+                    AppState.engineerFilter = state.engineerFilter || 'all';
+                }
+            } catch (e) { console.warn('Could not load state from localStorage:', e); }
+        }
+
+        // ---------- Modal Control ----------
+        function openCalculatorModal() {
+            DOM.calculatorModalContent.innerHTML = '';
+            const calculators = ModuleData.engineer.sections.find(s => s.type === 'interactive').items;
+            calculators.forEach(calc => {
+                DOM.calculatorModalContent.appendChild(createCalculatorCard(calc));
+            });
+            DOM.calculatorModal.style.display = 'flex';
+            DOM.calculatorModalClose.focus();
+        }
+
+        function closeCalculatorModal() {
+            DOM.calculatorModal.style.display = 'none';
+        }
+
+        DOM.calculatorToggle.addEventListener('click', openCalculatorModal);
+        DOM.calculatorModalClose.addEventListener('click', closeCalculatorModal);
+        DOM.calculatorModal.addEventListener('click', (e) => {
+            if (e.target === DOM.calculatorModal) closeCalculatorModal();
+        });
+
+        // About modal
+        DOM.aboutToggle.addEventListener('click', () => {
+            DOM.aboutModal.style.display = 'flex';
+        });
+        DOM.aboutModalClose.addEventListener('click', () => {
+            DOM.aboutModal.style.display = 'none';
+        });
+        DOM.aboutModal.addEventListener('click', (e) => {
+            if (e.target === DOM.aboutModal) DOM.aboutModal.style.display = 'none';
+        });
+
+        // Scroll to top
+        DOM.contentContainer.addEventListener('scroll', () => {
+            if (DOM.contentContainer.scrollTop > 200) {
+                DOM.scrollTopBtn.classList.add('visible');
+            } else {
+                DOM.scrollTopBtn.classList.remove('visible');
+            }
+        });
+        DOM.scrollTopBtn.addEventListener('click', () => {
+            DOM.contentContainer.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
         // ---------- Render functions (only engineer render shown with filter tabs, others unchanged) ----------
         function renderTS16Module() {
@@ -2808,351 +3263,6 @@
             return fragment;
         }
 
-        // ---------- Helper Functions (scenario, calculator, toggle) ----------
-        const renderScenarioTemplate = (scenario, index) => {
-            const scenarioId = `scenario-${index}`;
-            const isExpanded = AppState.expandedScenarios.has(scenarioId);
-            return `
-                <div class="scenario-card" data-scenario-id="${scenarioId}">
-                    <div class="scenario-title">
-                        <span class="scenario-icon">${scenario.icon}</span>
-                        ${scenario.scenario}
-                    </div>
-                    <div class="priority-badge priority-${scenario.priority}">
-                        Priority: ${scenario.priority.toUpperCase()}
-                    </div>
-                    <div class="solution-list" style="display: ${isExpanded ? 'block' : 'none'}">
-                        ${scenario.steps.map((step, i) => `<div class="solution-step">${step}</div>`).join('')}
-                    </div>
-                    ${scenario.educational ? `
-                        <div class="educational-tip" style="display: ${isExpanded ? 'block' : 'none'}">
-                            <div class="tip-title">📚 ${scenario.educational.title}</div>
-                            <div class="tip-content">${scenario.educational.content}</div>
-                        </div>
-                    ` : ''}
-                    ${scenario.reference ? `
-                        <div class="reference-card" style="display: ${isExpanded ? 'block' : 'none'}">
-                            <div class="reference-title">Reference Standard</div>
-                            <div class="reference-value">${scenario.reference}</div>
-                        </div>
-                    ` : ''}
-                    <button class="scenario-toggle" data-scenario-id="${scenarioId}" 
-                            style="margin-top: 12px; padding: 8px 16px; background: var(--primary-color); 
-                                   color: white; border: none; border-radius: var(--radius-sm); 
-                                   cursor: pointer; width: 100%;">
-                        ${isExpanded ? 'Show Less ▲' : 'Show Solution ▼'}
-                    </button>
-                </div>
-            `;
-        };
-
-        const toggleScenario = (scenarioId) => {
-            const scenarioElement = DOM.moduleContent.querySelector(`[data-scenario-id="${scenarioId}"]`);
-            if (!scenarioElement) return;
-            const solutionList = scenarioElement.querySelector('.solution-list');
-            const educationalTip = scenarioElement.querySelector('.educational-tip');
-            const referenceCard = scenarioElement.querySelector('.reference-card');
-            const toggleButton = scenarioElement.querySelector('.scenario-toggle');
-            if (AppState.expandedScenarios.has(scenarioId)) {
-                AppState.expandedScenarios.delete(scenarioId);
-                solutionList.style.display = 'none';
-                if (educationalTip) educationalTip.style.display = 'none';
-                if (referenceCard) referenceCard.style.display = 'none';
-                toggleButton.textContent = 'Show Solution ▼';
-            } else {
-                AppState.expandedScenarios.add(scenarioId);
-                solutionList.style.display = 'block';
-                if (educationalTip) educationalTip.style.display = 'block';
-                if (referenceCard) referenceCard.style.display = 'block';
-                toggleButton.textContent = 'Show Less ▲';
-            }
-            saveAppState();
-        };
-
-        function createCalculatorCard(calc) {
-            const card = createElement('div', { className: 'calculator-card' });
-            card.appendChild(createElement('h3', {}, [calc.name]));
-            if (calc.description) {
-                card.appendChild(createElement('p', {}, [calc.description]));
-            }
-
-            const inputsDiv = createElement('div', { className: 'calculator-inputs' });
-            const values = {};
-
-            calc.inputs.forEach(input => {
-                const id = `calc-${calc.id}-${input.name}-${Math.random().toString(36).substr(2, 5)}`;
-                const group = createElement('div', { className: 'calculator-input-group' });
-                const label = createElement('label', { htmlFor: id }, [
-                    input.label, input.unit ? ` (${input.unit})` : ''
-                ]);
-                const inputEl = createElement('input', {
-                    id: id,
-                    type: 'number',
-                    value: input.default,
-                    step: input.step || 'any',
-                    min: input.min !== undefined ? input.min : 0,
-                    style: { width: '100%', padding: '8px' },
-                    onInput: () => updateResult()
-                });
-                group.appendChild(label);
-                group.appendChild(inputEl);
-                inputsDiv.appendChild(group);
-                values[input.name] = inputEl;
-            });
-
-            card.appendChild(inputsDiv);
-
-            const resultDiv = createElement('div', { className: 'calculator-result' });
-
-            const updateResult = () => {
-                const params = {};
-                let allValid = true;
-                for (const [key, el] of Object.entries(values)) {
-                    const val = parseFloat(el.value);
-                    if (isNaN(val)) { allValid = false; break; }
-                    params[key] = val;
-                }
-
-                if (!allValid) {
-                    resultDiv.innerHTML = '<div class="calculator-error">Please enter valid numbers</div>';
-                    return;
-                }
-
-                const result = calc.calculate(
-                    params[calc.inputs[0].name],
-                    params[calc.inputs[1].name],
-                    params[calc.inputs[2]?.name],
-                    params[calc.inputs[3]?.name],
-                    params[calc.inputs[4]?.name],
-                    params[calc.inputs[5]?.name]
-                );
-
-                if (result.error) {
-                    resultDiv.innerHTML = `<div class="calculator-error">${result.error}</div>`;
-                } else {
-                    let html = '';
-                    for (const [key, value] of Object.entries(result)) {
-                        if (key !== 'error') {
-                            const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
-                            html += `<div class="calculator-result-line"><strong>${label}:</strong> ${value}</div>`;
-                        }
-                    }
-                    resultDiv.innerHTML = html;
-                }
-            };
-
-            card.appendChild(resultDiv);
-            setTimeout(updateResult, 0);
-            return card;
-        }
-
-        function toggleChecklistItem(itemId) {
-            if (AppState.checkedItems.has(itemId)) AppState.checkedItems.delete(itemId);
-            else AppState.checkedItems.add(itemId);
-            if (AppState.currentModule === 'dxf') {
-                const itemElement = DOM.moduleContent.querySelector(`[onclick*="${itemId}"]`);
-                if (itemElement) {
-                    itemElement.classList.toggle('checked', AppState.checkedItems.has(itemId));
-                    updateProgressBar();
-                }
-            }
-            saveAppState();
-        }
-
-        function updateProgressBar() {
-            if (AppState.currentModule !== 'dxf') return;
-            const checkedCount = Array.from(AppState.checkedItems).filter(id => id.startsWith('dxf-')).length;
-            const totalItems = ModuleData.dxf.checklist.length;
-            const progressFill = DOM.moduleContent.querySelector('.progress-fill');
-            if (progressFill) progressFill.style.width = `${(checkedCount / totalItems) * 100}%`;
-            const progressText = DOM.moduleContent.querySelector('.progress-header span:last-child');
-            if (progressText) progressText.textContent = `${checkedCount}/${totalItems}`;
-            const progressStats = DOM.moduleContent.querySelector('.progress-stats span:last-child');
-            if (progressStats) {
-                progressStats.innerHTML = checkedCount === totalItems ? '✅ Ready for export' :
-                    checkedCount >= totalItems * 0.8 ? '🟡 Almost complete' : '🔴 Needs attention';
-            }
-        }
-
-        function toggleTheme() {
-            const newTheme = AppState.theme === 'light' ? 'dark' : 'light';
-            AppState.theme = newTheme;
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        }
-
-        function toggleSearch() {
-            const isVisible = DOM.searchOverlay.style.display !== 'none';
-            DOM.searchOverlay.style.display = isVisible ? 'none' : 'block';
-            if (!isVisible) {
-                setTimeout(() => { DOM.searchInput.focus(); DOM.searchInput.select(); }, 100);
-            } else {
-                DOM.searchInput.blur();
-            }
-        }
-
-        function performSearch(query) {
-            AppState.searchQuery = query.toLowerCase().trim();
-            if (!AppState.searchQuery) { loadModule(AppState.currentModule); return; }
-            const results = [];
-            const searchTerms = AppState.searchQuery.split(' ').filter(term => term.length > 2);
-            const containsAllTerms = (text) => searchTerms.every(term => text.toLowerCase().includes(term));
-
-            Object.entries(ModuleData).forEach(([moduleId, module]) => {
-                if (module.sections) {
-                    module.sections.forEach(section => {
-                        if (containsAllTerms(section.title) || (section.content && section.content.some(item => containsAllTerms(item)))) {
-                            results.push({
-                                module: moduleId,
-                                title: section.title,
-                                content: section.content ? section.content.find(item => containsAllTerms(item)) || section.content[0] : 'Section content',
-                                type: module.title
-                            });
-                        }
-                    });
-                }
-                if (module.checklist) {
-                    module.checklist.forEach(item => {
-                        if (containsAllTerms(item.title) || containsAllTerms(item.details)) {
-                            results.push({ module: moduleId, title: item.title, content: item.details, type: module.title });
-                        }
-                    });
-                }
-                if (moduleId === 'engineer' && module.sections) {
-                    module.sections.forEach(section => {
-                        if (section.type === 'glossary') {
-                            section.categories.forEach(category => {
-                                category.terms.forEach(term => {
-                                    if (containsAllTerms(term.term) || containsAllTerms(term.definition)) {
-                                        results.push({ module: moduleId, title: term.term, content: term.definition, type: module.title + ' - Glossary' });
-                                    }
-                                });
-                            });
-                        } else if (section.type === 'qa') {
-                            section.items.forEach(item => {
-                                if (containsAllTerms(item.title)) {
-                                    results.push({ module: moduleId, title: item.title, content: `Checklist for ${item.phase} phase`, type: module.title + ' - QA Checklists' });
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-            displaySearchResults(results);
-        }
-
-        function displaySearchResults(results) {
-            DOM.moduleContent.innerHTML = '';
-            if (results.length === 0) {
-                DOM.moduleContent.appendChild(createElement('div', { className: 'empty-state' }, [
-                    createElement('div', { className: 'empty-state-icon' }, ['🔍']),
-                    createElement('h3', {}, ['No results found']),
-                    createElement('p', {}, ['No matches for "', createElement('strong', {}, [AppState.searchQuery]), '"']),
-                    createElement('p', { style: { marginTop: '16px', fontSize: '14px', lineHeight: '1.5' } }, ['Try different keywords or browse the modules directly.'])
-                ]));
-                return;
-            }
-            DOM.moduleContent.appendChild(createElement('h1', { className: 'module-title' }, [`Search Results (${results.length})`]));
-            DOM.moduleContent.appendChild(createElement('p', { className: 'module-subtitle' }, ['Found ', results.length, ' matches for "', createElement('strong', {}, [AppState.searchQuery]), '"']));
-            const groupedResults = {};
-            results.forEach(result => {
-                if (!groupedResults[result.module]) groupedResults[result.module] = [];
-                groupedResults[result.module].push(result);
-            });
-            Object.entries(groupedResults).forEach(([moduleId, moduleResults]) => {
-                const moduleName = moduleResults[0].type;
-                DOM.moduleContent.appendChild(createElement('h2', { className: 'section-header', style: { marginTop: '24px' } }, [moduleName]));
-                moduleResults.forEach(result => {
-                    const resultItem = createElement('div', { 
-                        className: 'accordion',
-                        onClick: () => { loadModule(result.module); DOM.searchInput.value = ''; toggleSearch(); }
-                    }, [
-                        createElement('div', { style: { padding: '16px', cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: '8px' } }, [
-                            createElement('div', { style: { fontWeight: '600', fontSize: '15px', color: 'var(--text-primary)', lineHeight: '1.3' } }, [result.title]),
-                            createElement('div', { style: { fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.4' } }, [result.content.substring(0, 120) + (result.content.length > 120 ? '...' : '')]),
-                            createElement('div', { style: { fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' } }, ['Tap to open in ', moduleName])
-                        ])
-                    ]);
-                    DOM.moduleContent.appendChild(resultItem);
-                });
-            });
-        }
-
-        function saveAppState() {
-            try {
-                const state = {
-                    theme: AppState.theme,
-                    currentModule: AppState.currentModule,
-                    checkedItems: Array.from(AppState.checkedItems),
-                    expandedItems: Array.from(AppState.expandedItems),
-                    expandedScenarios: Array.from(AppState.expandedScenarios),
-                    dxfFilter: AppState.dxfFilter,
-                    engineerFilter: AppState.engineerFilter
-                };
-                localStorage.setItem('fieldCompanionState', JSON.stringify(state));
-            } catch (e) { console.warn('Could not save state to localStorage:', e); }
-        }
-
-        function loadAppState() {
-            try {
-                const saved = localStorage.getItem('fieldCompanionState');
-                if (saved) {
-                    const state = JSON.parse(saved);
-                    AppState.theme = state.theme || 'light';
-                    AppState.currentModule = state.currentModule || 'ts16';
-                    AppState.checkedItems = new Set(state.checkedItems || []);
-                    AppState.expandedItems = new Set(state.expandedItems || []);
-                    AppState.expandedScenarios = new Set(state.expandedScenarios || []);
-                    AppState.dxfFilter = state.dxfFilter || 'all';
-                    AppState.engineerFilter = state.engineerFilter || 'all';
-                }
-            } catch (e) { console.warn('Could not load state from localStorage:', e); }
-        }
-
-        // ---------- Modal Control ----------
-        function openCalculatorModal() {
-            DOM.calculatorModalContent.innerHTML = '';
-            const calculators = ModuleData.engineer.sections.find(s => s.type === 'interactive').items;
-            calculators.forEach(calc => {
-                DOM.calculatorModalContent.appendChild(createCalculatorCard(calc));
-            });
-            DOM.calculatorModal.style.display = 'flex';
-            DOM.calculatorModalClose.focus();
-        }
-
-        function closeCalculatorModal() {
-            DOM.calculatorModal.style.display = 'none';
-        }
-
-        DOM.calculatorToggle.addEventListener('click', openCalculatorModal);
-        DOM.calculatorModalClose.addEventListener('click', closeCalculatorModal);
-        DOM.calculatorModal.addEventListener('click', (e) => {
-            if (e.target === DOM.calculatorModal) closeCalculatorModal();
-        });
-
-        // About modal
-        DOM.aboutToggle.addEventListener('click', () => {
-            DOM.aboutModal.style.display = 'flex';
-        });
-        DOM.aboutModalClose.addEventListener('click', () => {
-            DOM.aboutModal.style.display = 'none';
-        });
-        DOM.aboutModal.addEventListener('click', (e) => {
-            if (e.target === DOM.aboutModal) DOM.aboutModal.style.display = 'none';
-        });
-
-        // Scroll to top
-        DOM.contentContainer.addEventListener('scroll', () => {
-            if (DOM.contentContainer.scrollTop > 200) {
-                DOM.scrollTopBtn.classList.add('visible');
-            } else {
-                DOM.scrollTopBtn.classList.remove('visible');
-            }
-        });
-        DOM.scrollTopBtn.addEventListener('click', () => {
-            DOM.contentContainer.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
         // ---------- Service Worker ----------
         const registerServiceWorker = async () => {
             if ('serviceWorker' in navigator) {
@@ -3192,7 +3302,7 @@
                 if (content) DOM.moduleContent.appendChild(content);
                 DOM.moduleContent.classList.remove('loading');
                 setTimeout(() => { DOM.contentContainer.scrollTop = 0; AppState.activeTab = moduleId; }, 10);
-                document.title = `${ModuleData[moduleId].title} - Site Engineering Companion`;
+                document.title = `${ModuleData[moduleId].title} - Site Engineering Assistant`;
             });
             saveAppState();
         }
@@ -3238,7 +3348,7 @@
             registerServiceWorker();
             loadModule(AppState.currentModule);
 
-            console.log('Site Engineering Companion v2.0 (WrodTech) fully loaded – new terminology & features active');
+            console.log('Site Engineering Assistant v2.1 (WTech) fully loaded – advanced calculators added');
         }
 
         if (document.readyState === 'loading') {
